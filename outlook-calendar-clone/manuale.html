@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuale Utente - Calendario Brico io</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f9f9f9;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0078d4;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #0078d4;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #555;
+            border-left: 4px solid #0078d4;
+            padding-left: 10px;
+            margin-top: 25px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .blue {
+            background-color: #0078d4;
+        }
+
+        .yellow {
+            background-color: #ffb900;
+            color: black;
+        }
+
+        .red {
+            background-color: #d13438;
+        }
+
+        .green {
+            background-color: #107c10;
+        }
+
+        .note {
+            background: #eef6fc;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #0078d4;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📅 Manuale Utente - Calendario Scarichi</h1>
+        <p>Benvenuto! Questa guida ti spiega come usare il nuovo calendario digitale per gestire gli arrivi merci. È
+            pensato per essere facilissimo, anche se non sei un esperto di computer.</p>
+
+        <h2>🚀 1. Come Iniziare</h2>
+        <ul>
+            <li><strong>Apri il Link</strong>: Clicca sul link del sito (es. quello di Netlify che hai ricevuto).</li>
+            <li><strong>Scegli il Tuo Negozio</strong>:
+                <ul>
+                    <li>Appena apri, ti chiederà "Seleziona Negozio".</li>
+                    <li>Scegli il tuo punto vendita (es. <code>1166 - CECINA</code>).</li>
+                    <li>Clicca su <strong>Entra</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="note">💡 Il sistema si ricorderà la scelta, non dovrai farlo ogni volta.</div>
+
+        <h2>🎨 2. I Colori (Stati dello Scarico)</h2>
+        <p>Il calendario usa 4 colori per farti capire subito a che punto è una spedizione:</p>
+        <ul>
+            <li><span class="badge blue">BLU</span> <strong>PIANIFICATO</strong>: Il fornitore ha detto che arriva, ma
+                non è ancora qui.</li>
+            <li><span class="badge yellow">GIALLO</span> <strong>SCARICATO</strong>: Il camion è arrivato e abbiamo
+                scaricato la merce.</li>
+            <li><span class="badge red">ROSSO</span> <strong>SPUNTATO</strong>: Abbiamo controllato la merce (spunta) ed
+                è tutto ok.</li>
+            <li><span class="badge green">VERDE</span> <strong>CARICATO</strong>: La merce è stata caricata a sistema
+                (Mago/SAP).</li>
+        </ul>
+
+        <h2>📝 3. Come Usare il Calendario</h2>
+
+        <h3>Aggiungere un Nuovo Arrivo (BLU)</h3>
+        <ol>
+            <li>Clicca su un giorno qualsiasi del calendario.</li>
+            <li>Scrivi il <strong>Nome del Fornitore</strong> (es. "Baldini Vernici").</li>
+            <li>Clicca su <strong>Salva</strong>.</li>
+        </ol>
+
+        <h3>Cambiare Stato (Avanzamento Lavori)</h3>
+        <p>Quando il camion arriva o finisci un lavoro, clicca sull'evento colorato per farlo avanzare.</p>
+        <ul>
+            <li><strong>Da Blu a Giallo</strong>:
+                <ul>
+                    <li>Inserisci il n. DDT e il tuo nome.</li>
+                    <li>📸 <strong>NUOVO!</strong> Puoi scattare/caricare una foto del DDT o della merce (opzionale).
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Da Giallo a Rosso</strong>:
+                <ul>
+                    <li>Inserisci i numeri di spunta (puoi inserirne più di uno, uno per riga).</li>
+                    <li>Inserisci il nome operatore.</li>
+                    <li>📸 <strong>NUOVO!</strong> Puoi scattare/caricare una foto della spunta (opzionale).</li>
+                </ul>
+            </li>
+            <li><strong>Da Rosso a Verde</strong>: Inserisci il Doc. Materiale. <strong>Finito!</strong> 🏆</li>
+        </ul>
+
+        <h3>📸 Come Scattare Foto (NOVITÀ!)</h3>
+        <p>Durante i passaggi di stato puoi documentare l'arrivo con foto:</p>
+        <ul>
+            <li><strong>Da Smartphone/Tablet</strong>: Il pulsante "Foto" aprirà direttamente la fotocamera.</li>
+            <li><strong>Da PC</strong>: Puoi caricare foto esistenti dal computer.</li>
+            <li>Le foto sono <strong>opzionali</strong> - puoi saltare questo passaggio.</li>
+            <li>Le foto vengono compresse automaticamente per risparmiare spazio.</li>
+            <li>Clicca sulla foto per ingrandirla quando riapri l'evento.</li>
+        </ul>
+
+        <h3>✏️ Modificare Numeri di Spunta (NOVITÀ!)</h3>
+        <p>Hai dimenticato un numero di spunta? Nessun problema!</p>
+        <ol>
+            <li>Riapri un evento già in stato <span class="badge red">ROSSO</span> (Spuntato).</li>
+            <li>Vedrai i numeri già inseriti - puoi aggiungerne altri.</li>
+            <li>Clicca <strong>Salva</strong> senza compilare "Doc. Materiale" per rimanere in Rosso.</li>
+            <li>Oppure compila "Doc. Materiale" per passare a <span class="badge green">VERDE</span>.</li>
+        </ol>
+
+        <h2>🖨️ 4. Stampare il Report Giornaliero</h2>
+        <p>Serve il foglio di carta per l'ufficio?</p>
+        <ol>
+            <li>In alto a destra, clicca su <strong>"Giorno"</strong>.</li>
+            <li>Clicca sul tasto <strong>"🖨️ Stampa Report"</strong>.</li>
+            <li>Si aprirà il riepilogo di oggi pronto per la stampa.</li>
+            <li><strong>NUOVO!</strong> Il report è scrollabile se hai molti eventi.</li>
+        </ol>
+
+        <h2>💾 5. Backup e Sicurezza Dati</h2>
+        <p>Per evitare di perdere i dati, è consigliabile scaricare un backup periodicamente.</p>
+        <ul>
+            <li><strong>📥 Esporta Backup</strong>: Clicca questo tasto per scaricare sul tuo computer un file con tutti
+                i dati del negozio selezionato. Il file verrà salvato nella cartella <strong>Download</strong>.</li>
+            <li><strong>📤 Importa Backup</strong>: Clicca questo tasto per ripristinare i dati da un file salvato in
+                precedenza.
+                <br><span style="color: #d13438;"><strong>ATTENZIONE</strong>: L'importazione sovrascrive completamente
+                    i dati attuali!</span>
+            </li>
+        </ul>
+
+        <h2>❓ 6. Domande Frequenti</h2>
+        <ul>
+            <li><strong>Devo cliccare "Salva" per mandarlo agli altri?</strong><br>NO. Si salva da solo all'istante
+                (Cloud).</li>
+            <li><strong>Posso aprirlo dal telefono?</strong><br>SÌ, funziona su PC, Smartphone e Tablet.</li>
+            <li><strong>Ho sbagliato negozio, come cambio?</strong><br>Clicca sulla scritta piccolina
+                <code>(Cambia)</code> sotto il logo in alto a sinistra.
+            </li>
+            <li><strong>Posso inserire più numeri di spunta?</strong><br>SÌ! Scrivili uno per riga nel campo "Numeri
+                Spunta".</li>
+            <li><strong>Le foto occupano molto spazio?</strong><br>NO, vengono compresse automaticamente (max 1024px).
+            </li>
+            <li><strong>Devo per forza scattare foto?</strong><br>NO, le foto sono opzionali. Puoi saltare questo
+                passaggio.</li>
+            <li><strong>Posso modificare i numeri di spunta dopo?</strong><br>SÌ! Riapri l'evento in stato Rosso e
+                aggiungi altri numeri.</li>
+        </ul>
+
+    </div>
+</body>
+
+</html>

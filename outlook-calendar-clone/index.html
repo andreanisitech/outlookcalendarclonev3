@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlook Calendar Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <!-- Header Removed -->
+
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="brand-logo-container">
+                    <img src="assets/brico_logo.png" alt="Brico io" class="brand-logo">
+                </div>
+                <div class="mini-calendar-container">
+                    <!-- Mini calendar will be injected here -->
+                    <div id="mini-calendar"></div>
+                </div>
+
+                <!-- Backup Section -->
+                <div class="backup-section">
+                    <h3>💾 Backup Dati</h3>
+                    <button id="btn-export-backup" class="btn-backup">📥 Esporta Backup</button>
+                    <button id="btn-import-backup" class="btn-backup">📤 Importa Backup</button>
+                    <input type="file" id="file-import-backup" accept=".json" style="display: none;">
+                </div>
+
+                <div class="my-calendars">
+                    <h3>I miei calendari</h3>
+                    <ul>
+                        <li><input type="checkbox" checked id="toggle-calendar"> <span class="cal-color"></span>
+                            Calendario</li>
+                        <li><input type="checkbox" checked id="toggle-holidays"> <span class="cal-color"
+                                style="background:#ffcc00"></span> Festività</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Calendar View -->
+            <div class="calendar-view">
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                    </div>
+                    <div class="toolbar-center">
+                        <button class="btn-icon" id="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                        <h2 id="current-month-year">Dicembre 2025</h2>
+                        <button class="btn-icon" id="btn-next"><i class="fas fa-chevron-right"></i></button>
+                        <button class="btn-text" id="btn-today">Oggi</button>
+                    </div>
+                    <div class="toolbar-right">
+                        <div class="view-switcher">
+                            <button class="active" data-view="month">Mese</button>
+                            <button data-view="week">Settimana</button>
+                            <button data-view="day">Giorno</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-grid-container" id="calendar-grid">
+                    <!-- Calendar grid will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="store-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h2>Seleziona Negozio</h2>
+            <p>Scegli il tuo punto vendita per caricare i dati corretti.</p>
+            <div class="form-group">
+                <select id="store-selector" style="width: 100%; padding: 10px; font-size: 16px; margin: 20px 0;">
+                    <option value="">-- Seleziona --</option>
+                    <option value="1003">1003 - MONSELICE</option>
+                    <option value="1006">1006 - GROTTAMMARE</option>
+                    <option value="1112">1112 - PORTOGRUARO</option>
+                    <option value="1128">1128 - RICCIONE</option>
+                    <option value="1136">1136 - COMACCHIO</option>
+                    <option value="1161">1161 - PONTEDERA</option>
+                    <option value="1163">1163 - PISTOIA</option>
+                    <option value="1166">1166 - CECINA</option>
+                    <option value="1173">1173 - FOLLONICA</option>
+                    <option value="1179">1179 - CALDERARA</option>
+                    <option value="1180">1180 - CENTO</option>
+                    <option value="1256">1256 - TERAMO</option>
+                </select>
+            </div>
+            <button id="btn-confirm-store" class="btn-primary" style="width: 100%;" disabled>Entra</button>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 300px; text-align: center;">
+            <h2>Conferma Eliminazione</h2>
+            <p>Sei sicuro di voler eliminare questo evento?</p>
+            <div class="modal-actions" style="justify-content: center;">
+                <button id="btn-cancel-delete" class="btn-text">Annulla</button>
+                <button id="btn-confirm-delete" class="btn-danger">Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="event-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Nuovo Spedizione</h2>
+            <form id="event-form">
+                <div class="form-group">
+                    <label>Fornitore (Titolo)</label>
+                    <input type="text" id="event-title" required placeholder="Nome Fornitore">
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="event-date" required>
+                </div>
+                <!-- Dynamic Fields Container -->
+                <div id="dynamic-fields">
+                    <!-- Steps fields will be injected here based on status -->
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Salva</button>
+                    <button type="button" id="btn-delete-event" class="btn-danger hidden">Elimina</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Compat Scripts (Work over file:// protocol) -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-storage-compat.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
