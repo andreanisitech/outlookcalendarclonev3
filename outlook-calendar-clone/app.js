@@ -13,7 +13,7 @@ const firebaseConfig = {
 // Initialize Firebase (Compat Mode)
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const storage = firebase.storage();
+// const storage = firebase.storage(); // REMOVED: Not used in Base64 Plan
 const auth = firebase.auth();
 
 // State
