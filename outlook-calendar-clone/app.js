@@ -2,7 +2,7 @@
 const firebaseConfig = {
     apiKey: "AIzaSyAjFrmneJ-ifX_jJ7Kir8yssQOLWaEIVKc",
     authDomain: "brico-calendar.firebaseapp.com",
-    databaseURL: "https://outlook-calendar-clone-default-rtdb.europe-west1.firebasedatabase.app",
+    databaseURL: "https://brico-calendar-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "brico-calendar",
     storageBucket: "brico-calendar.firebasestorage.app",
     messagingSenderId: "782258376222",
