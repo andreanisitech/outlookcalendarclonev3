@@ -13,7 +13,7 @@ const firebaseConfig = {
 // Initialize Firebase (Compat Mode)
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-// const storage = firebase.storage(); // REMOVED: Not used in Base64 Plan
+// const storage = firebase.storage(); // REMOVED: Saving photos as Base64 in Database
 const auth = firebase.auth();
 
 // State
@@ -238,32 +238,27 @@ function compressImage(file, maxSize) {
     });
 }
 
-async function uploadPhoto(file, eventId, photoType) {
-    // Helper to timeout a promise
-    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout operazione (60s) - Riprova, connessione lenta.')), ms));
-
-    const uploadTask = async () => {
+// MODIFIED: Convert Blob to Base64 String instead of uploading to Storage
+async function uploadPhoto(file) {
+    try {
         console.log("Inizio compressione...");
-        // Compress image to max 600px and lower quality for mobile data
-        const compressed = await compressImage(file, 600);
-        console.log("Compressione completata. Dimensione:", compressed.size);
+        const compressedBlob = await compressImage(file, 600); // Max 600px
+        console.log("Compressione completata. Dimensione:", compressedBlob.size);
 
-        // Upload to Firebase Storage
-        const path = `stores/${state.currentStore.id}/events/${eventId}/${photoType}_${Date.now()}.jpg`;
-        const ref = storage.ref(path);
-
-        console.log("Inizio upload a:", path);
-
-        // Use put with await
-        await ref.put(compressed);
-        console.log("Upload completato");
-
-        // Get public URL
-        return await ref.getDownloadURL();
-    };
-
-    // Race between upload and 60s timeout
-    return await Promise.race([uploadTask(), timeout(60000)]);
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                console.log("Foto convertita in Base64 (lunghezza stringa):", base64String.length);
+                resolve(base64String);
+            };
+            reader.onerror = () => reject(new Error("Errore lettura Blob"));
+            reader.readAsDataURL(compressedBlob);
+        });
+    } catch (e) {
+        console.error("Errore gestione foto:", e);
+        throw e;
+    }
 }
 
 
@@ -283,8 +278,7 @@ if (storeSelector && btnConfirmStore) {
     });
 }
 
-// --- RENDER & UI LOGIC (Truncated for brevity, but same as before) ---
-// ... (Including the rest of original functions transformed to support the non-module environment)
+// --- RENDER & UI LOGIC ---
 
 function getStatusColor(status) { return STATUS_COLORS[status] || STATUS_COLORS.scheduled; }
 
@@ -303,7 +297,7 @@ function renderCalendar() {
     else if (state.view === 'day') renderDayView(state.currentDate);
 }
 
-// ... helper functions (getMonday, isToday, etc.)
+// helper functions
 function getMonday(d) {
     d = new Date(d);
     var day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6 : 1);
@@ -513,14 +507,14 @@ eventForm.onsubmit = async (e) => {
                 const details = { ...event.details };
                 const actionDate = formData.get('action_date');
 
-                // Upload photos if present
+                // MODIFIED: Base64 Upload
                 const photoUnload = formData.get('photo_unload');
                 if (photoUnload && photoUnload.size > 0) {
                     try {
-                        const photoUrl = await uploadPhoto(photoUnload, state.selectedEventId, 'unload');
+                        const photoUrl = await uploadPhoto(photoUnload);
                         if (photoUrl) details.photo_unload_url = photoUrl;
                     } catch (err) {
-                        console.error("Unload photo upload failed", err);
+                        console.error("Unload photo failed", err);
                         alert("Errore nel caricamento della foto scarico: " + err.message);
                     }
                 }
@@ -528,10 +522,10 @@ eventForm.onsubmit = async (e) => {
                 const photoCheck = formData.get('photo_check');
                 if (photoCheck && photoCheck.size > 0) {
                     try {
-                        const photoUrl = await uploadPhoto(photoCheck, state.selectedEventId, 'check');
+                        const photoUrl = await uploadPhoto(photoCheck);
                         if (photoUrl) details.photo_check_url = photoUrl;
                     } catch (err) {
-                        console.error("Check photo upload failed", err);
+                        console.error("Check photo failed", err);
                         alert("Errore nel caricamento della foto spunta: " + err.message);
                     }
                 }
@@ -749,7 +743,7 @@ if (btnImportBackup && fileImportBackup) {
         reader.onload = async (event) => {
             try {
                 const data = JSON.parse(event.target.result);
-                // Simple validation: check if it has events or common structure
+                // Simple validation
                 if (data && (data.events || typeof data === 'object')) {
                     await db.ref(`stores/${state.currentStore.id}`).set(data);
                     alert('Backup ripristinato con successo! La pagina verrà ricaricata.');
